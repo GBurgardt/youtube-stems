@@ -1,13 +1,13 @@
 #!/usr/bin/env node
-import dotenv from "dotenv";
 import ytdl from "ytdl-core";
 import fs from "fs";
 import path from "path";
 import Moises from "moises/sdk.js";
-
-const moises = new Moises({ apiKey: process.env.ROCKAI_MOISES_API_KEY });
+import dotenv from "dotenv";
 
 dotenv.config();
+
+const moises = new Moises({ apiKey: process.env.ROCKAI_MOISES_API_KEY });
 
 async function downloadYouTubeAudio(url, outputPath) {
   return new Promise((resolve, reject) => {
@@ -23,11 +23,14 @@ async function processAudio(youtubeURL) {
 
   const workflow = "test1";
 
+  const audioUrl = "~/rockai/audio";
+  const stemUrl = "~/rockai/stems";
+
   try {
-    const audioPath = path.join("./audio", "downloadedAudio.wav");
+    const audioPath = path.join(audioUrl, "downloadedAudio.wav");
     await downloadYouTubeAudio(youtubeURL, audioPath);
     console.log("Audio downloaded");
-    await moises.processFolder(workflow, "./audio", "./stems", {});
+    await moises.processFolder(workflow, audioUrl, stemUrl, {});
     console.log(`Audio processed`);
   } catch (error) {
     console.error("Error:", error);
