@@ -9,6 +9,7 @@ dotenv.config();
 import fs from "fs";
 
 import * as fsPromises from "fs";
+import { getVideoTitle } from "./utils.js";
 
 const moises = new Moises({ apiKey: process.env.ROCKAI_MOISES_API_KEY });
 
@@ -33,8 +34,14 @@ async function processAudio(youtubeURL) {
     await ensureDirectoryExistence(audioUrl);
     await ensureDirectoryExistence(stemUrl);
 
-    const timestamp = Date.now(); // Obtiene el sello de tiempo actual
-    const audioPath = path.join(audioUrl, `downloadedAudio_${timestamp}.wav`); // Nombre de archivo único
+    // const timestamp = Date.now(); // Obtiene el sello de tiempo actual
+    // const audioPath = path.join(audioUrl, `downloadedAudio_${timestamp}.wav`); // Nombre de archivo único
+
+    const audioName = await getVideoTitle(youtubeURL);
+
+    const audioPath = path.join(audioUrl, `${audioName}.wav`);
+    console.log("Audio path", audioPath);
+
     await downloadYouTubeAudio(youtubeURL, audioPath);
     console.log("Audio downloaded");
     console.log("audioUrl", audioUrl);
