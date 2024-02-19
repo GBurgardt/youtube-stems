@@ -33,7 +33,8 @@ async function processAudio(youtubeURL) {
     await ensureDirectoryExistence(audioUrl);
     await ensureDirectoryExistence(stemUrl);
 
-    const audioPath = path.join(audioUrl, "downloadedAudio.wav");
+    const timestamp = Date.now(); // Obtiene el sello de tiempo actual
+    const audioPath = path.join(audioUrl, `downloadedAudio_${timestamp}.wav`); // Nombre de archivo único
     await downloadYouTubeAudio(youtubeURL, audioPath);
     console.log("Audio downloaded");
     console.log("audioUrl", audioUrl);
